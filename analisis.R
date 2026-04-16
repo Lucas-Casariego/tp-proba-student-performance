@@ -7,6 +7,9 @@
 #                   grade (F / D / C / B / A)
 # ==============================================================================
 
+install.packages("dplyr")
+install.packages("ggplot2")
+
 library(dplyr)
 library(ggplot2)
 
@@ -21,13 +24,12 @@ df <- csv_students[, c("study_hours_per_day", "sleep_hours", "parent_education",
 df$grade <- factor(df$grade,
                    levels = c("F", "D", "C", "B", "A"), ordered = TRUE)
 df$parent_education <- factor(df$parent_education,
-                        levels = c("High School", "Bachelor", "Master", "PhD"), ordered = TRUE)
+                              levels = c("High School", "Bachelor", "Master", "PhD"), ordered = TRUE)
 
 # Variable derivada: aprobación (A / B / C = Aprobado; D / F = Desaprobado)
-df <- df %>%
 df$aprobado <- ifelse(df$grade %in% c("A", "B", "C", "D"),
-                    "Aprobado",
-                    "Desaprobado")
+                      "Aprobado",
+                      "Desaprobado")
 
 cat("N =", nrow(df), "\n")
 
@@ -173,27 +175,27 @@ print(resumen_cuadrantes)
 cat("\n--- Entre quienes estudian POCO (< mediana): ¿dormir poco ayuda? ---\n")
 poco_estudio <- df %>% filter(grupo_estudio == "Poco estudio")
 print(poco_estudio %>%
-  group_by(grupo_sueno) %>%
-  summarise(
-    n            = n(),
-    pct_aprobado = round(mean(aprobado == "Aprobado") * 100, 1),
-    pct_A_o_B    = round(mean(grade %in% c("A", "B")) * 100, 1),
-    media_grade_num = round(mean(as.numeric(grade)), 2),  # 1=F … 5=A
-    .groups      = "drop"
-  ))
+        group_by(grupo_sueno) %>%
+        summarise(
+          n            = n(),
+          pct_aprobado = round(mean(aprobado == "Aprobado") * 100, 1),
+          pct_A_o_B    = round(mean(grade %in% c("A", "B")) * 100, 1),
+          media_grade_num = round(mean(as.numeric(grade)), 2),  # 1=F … 5=A
+          .groups      = "drop"
+        ))
 
 # --- Foco 2: entre los que estudian MUCHO ---
 cat("\n--- Entre quienes estudian MUCHO (>= mediana): ¿dormir poco afecta? ---\n")
 mucho_estudio <- df %>% filter(grupo_estudio == "Mucho estudio")
 print(mucho_estudio %>%
-  group_by(grupo_sueno) %>%
-  summarise(
-    n            = n(),
-    pct_aprobado = round(mean(aprobado == "Aprobado") * 100, 1),
-    pct_A_o_B    = round(mean(grade %in% c("A", "B")) * 100, 1),
-    media_grade_num = round(mean(as.numeric(grade)), 2),
-    .groups      = "drop"
-  ))
+        group_by(grupo_sueno) %>%
+        summarise(
+          n            = n(),
+          pct_aprobado = round(mean(aprobado == "Aprobado") * 100, 1),
+          pct_A_o_B    = round(mean(grade %in% c("A", "B")) * 100, 1),
+          media_grade_num = round(mean(as.numeric(grade)), 2),
+          .groups      = "drop"
+        ))
 
 # --- Distribución completa de grades por cuadrante ---
 cat("\n--- Distribución de grades por cuadrante ---\n")
