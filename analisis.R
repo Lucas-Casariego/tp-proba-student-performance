@@ -35,7 +35,7 @@ df$parent_education <- factor(df$parent_education,
 # Variable derivada: aprobación (A / B / C / D = Aprobado; F = Reprobado)
 df$aprobado <- ifelse(df$grade %in% c("A", "B", "C", "D"),
                       "Aprobado",
-                      "Desaprobado")
+                      "Reprobado")
 
 cat("N =", nrow(df), "\n")
 
@@ -399,7 +399,7 @@ p_cuad_apro <- ggplot(resumen_cuad_apro,
   geom_text(aes(label = paste0(round(pct, 1), "%")),
             position = position_stack(vjust = 0.5),
             size = 3.5, color = "white", fontface = "bold") +
-  scale_fill_manual(values = c("Aprobado" = "#2ca02c", "Desaprobado" = "#d62728")) +
+  scale_fill_manual(values = c("Aprobado" = "#2ca02c", "Reprobado" = "#d62728")) +
   coord_flip() +
   labs(title = "Tasa de Aprobación por Cuadrante (Estudio × Sueño)",
        x = NULL, y = "Porcentaje", fill = "Estado") +
