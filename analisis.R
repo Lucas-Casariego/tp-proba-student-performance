@@ -32,7 +32,7 @@ df$grade <- factor(df$grade,
 df$parent_education <- factor(df$parent_education,
                               levels = c("High School", "Bachelor", "Master", "PhD"), ordered = TRUE)
 
-# Variable derivada: aprobación (A / B / C = Aprobado; D / F = Desaprobado)
+# Variable derivada: aprobación (A / B / C / D = Aprobado; F = Desaprobado)
 df$aprobado <- ifelse(df$grade %in% c("A", "B", "C", "D"),
                       "Aprobado",
                       "Desaprobado")
