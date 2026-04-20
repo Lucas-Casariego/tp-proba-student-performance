@@ -7,8 +7,12 @@
 #                   grade (F / D / C / B / A)
 # ==============================================================================
 
-install.packages("dplyr")
-install.packages("ggplot2")
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  stop("El paquete 'dplyr' no está instalado. Instálalo antes de ejecutar este script.")
+}
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  stop("El paquete 'ggplot2' no está instalado. Instálalo antes de ejecutar este script.")
+}
 
 library(dplyr)
 library(ggplot2)
