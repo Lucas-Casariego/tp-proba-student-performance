@@ -249,6 +249,91 @@ tab_cuad_grade <- df %>%
 print(tab_cuad_grade, n = Inf)
 
 # ------------------------------------------------------------------------------
+# 5.b ANÁLISIS COMPLEMENTARIO: CUARTILES DE SUEÑO Y ESTUDIO -> RENDIMIENTO
+# Se profundiza el análisis principal comparando extremos (Q1 vs Q4)
+# y la tendencia completa por cuartiles.
+# ------------------------------------------------------------------------------
+
+cat("\n========== ANÁLISIS COMPLEMENTARIO POR CUARTILES ==========\n")
+
+# Q1 vs Q4 de sueño -> rendimiento
+cat("\n--- Q1 vs Q4 de sleep_hours -> performance ---\n")
+
+q1_sueno <- quantile(df$sleep_hours, 0.25, na.rm = TRUE)
+q4_sueno <- quantile(df$sleep_hours, 0.75, na.rm = TRUE)
+
+df_q_sueno <- df %>%
+  mutate(grupo_q_sueno = case_when(
+    sleep_hours <= q1_sueno ~ "Q1_sueno",
+    sleep_hours >= q4_sueno ~ "Q4_sueno",
+    TRUE ~ NA_character_
+  )) %>%
+  filter(!is.na(grupo_q_sueno))
+
+resumen_q_sueno_perf <- df_q_sueno %>%
+  group_by(grupo_q_sueno) %>%
+  summarise(
+    n                 = n(),
+    pct_aprobado      = round(mean(aprobado == "Aprobado") * 100, 1),
+    pct_A_o_B         = round(mean(grade %in% c("A", "B")) * 100, 1),
+    media_grade_num   = round(mean(as.numeric(grade)), 2),
+    mediana_grade_num = round(median(as.numeric(grade)), 2),
+    .groups           = "drop"
+  )
+
+print(resumen_q_sueno_perf)
+
+
+# Performance por cuartiles completos de sueño
+cat("\n--- Performance por cuartiles de sleep_hours (Q1-Q4) ---\n")
+
+df_cuartiles_sueno <- df %>%
+  mutate(cuartil_sueno = ntile(sleep_hours, 4))
+
+resumen_cuartiles_sueno <- df_cuartiles_sueno %>%
+  group_by(cuartil_sueno) %>%
+  summarise(
+    n                 = n(),
+    media_grade_num   = round(mean(as.numeric(grade)), 2),
+    mediana_grade_num = round(median(as.numeric(grade)), 2),
+    pct_aprobado      = round(mean(aprobado == "Aprobado") * 100, 1),
+    pct_A_o_B         = round(mean(grade %in% c("A", "B")) * 100, 1),
+    media_sueno       = round(mean(sleep_hours), 2),
+    mediana_sueno     = round(median(sleep_hours), 2),
+    .groups           = "drop"
+  )
+
+print(resumen_cuartiles_sueno)
+
+
+# Q1 vs Q4 de estudio -> rendimiento
+cat("\n--- Q1 vs Q4 de study_hours_per_day -> performance ---\n")
+
+q1_estudio <- quantile(df$study_hours_per_day, 0.25, na.rm = TRUE)
+q4_estudio <- quantile(df$study_hours_per_day, 0.75, na.rm = TRUE)
+
+df_q_estudio <- df %>%
+  mutate(grupo_q_estudio = case_when(
+    study_hours_per_day <= q1_estudio ~ "Q1_estudio",
+    study_hours_per_day >= q4_estudio ~ "Q4_estudio",
+    TRUE ~ NA_character_
+  )) %>%
+  filter(!is.na(grupo_q_estudio))
+
+resumen_q_estudio_perf <- df_q_estudio %>%
+  group_by(grupo_q_estudio) %>%
+  summarise(
+    n                 = n(),
+    pct_aprobado      = round(mean(aprobado == "Aprobado") * 100, 1),
+    pct_A_o_B         = round(mean(grade %in% c("A", "B")) * 100, 1),
+    media_grade_num   = round(mean(as.numeric(grade)), 2),
+    mediana_grade_num = round(median(as.numeric(grade)), 2),
+    .groups           = "drop"
+  )
+
+print(resumen_q_estudio_perf)
+
+# ------------------------------------------------------------------------------
 # 6. VISUALIZACIONES
 # ------------------------------------------------------------------------------
 
