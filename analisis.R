@@ -259,15 +259,15 @@ cat("\n========== ANÁLISIS COMPLEMENTARIO POR CUARTILES ==========\n")
 # Q1 vs Q4 de sueño -> rendimiento
 cat("\n--- Q1 vs Q4 de sleep_hours -> performance ---\n")
 
-q1_sueno <- quantile(df$sleep_hours, 0.25, na.rm = TRUE)
-q4_sueno <- quantile(df$sleep_hours, 0.75, na.rm = TRUE)
-
 df_q_sueno <- df %>%
-  mutate(grupo_q_sueno = case_when(
-    sleep_hours <= q1_sueno ~ "Q1_sueno",
-    sleep_hours >= q4_sueno ~ "Q4_sueno",
-    TRUE ~ NA_character_
-  )) %>%
+  mutate(
+    cuartil_sueno = ntile(sleep_hours, 4),
+    grupo_q_sueno = case_when(
+      cuartil_sueno == 1 ~ "Q1_sueno",
+      cuartil_sueno == 4 ~ "Q4_sueno",
+      TRUE ~ NA_character_
+    )
+  ) %>%
   filter(!is.na(grupo_q_sueno))
 
 resumen_q_sueno_perf <- df_q_sueno %>%
