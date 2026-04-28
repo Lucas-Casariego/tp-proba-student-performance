@@ -32,7 +32,7 @@ df$grade <- factor(df$grade,
 df$parent_education <- factor(df$parent_education,
                               levels = c("High School", "Bachelor", "Master", "PhD"), ordered = TRUE)
 
-# Variable derivada: aprobación (A / B / C = Aprobado; D / F = Desaprobado)
+# Variable derivada: aprobación (A / B / C / D = Aprobado; F = Desaprobado)
 df$aprobado <- ifelse(df$grade %in% c("A", "B", "C", "D"),
                       "Aprobado",
                       "Desaprobado")
@@ -313,14 +313,14 @@ print(resumen_cuartiles_sueno)
 # Q1 vs Q4 de estudio -> rendimiento
 cat("\n--- Q1 vs Q4 de study_hours_per_day -> performance ---\n")
 
-df_q_sueno <- df %>% 
+df_q_estudio <- df %>% 
 mutate(
   cuartil_estudio = ntile(study_hours_per_day, 4), 
   grupo_q_estudio = case_when( 
   cuartil_estudio == 1 ~ "Q1_estudio", 
   cuartil_estudio == 4 ~ "Q4_estudio", 
   TRUE ~ NA_character_ )) %>% 
-  filter(!is.na(grupo_q_sueno))
+  filter(!is.na(grupo_q_estudio))
 
 resumen_q_estudio_perf <- df_q_estudio %>%
   group_by(grupo_q_estudio) %>%
