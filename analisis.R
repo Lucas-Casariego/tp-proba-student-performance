@@ -7,8 +7,12 @@
 #                   grade (F / D / C / B / A)
 # ==============================================================================
 
-install.packages("dplyr")
-install.packages("ggplot2")
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  stop("El paquete 'dplyr' no está instalado. Instálalo antes de ejecutar este script.")
+}
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  stop("El paquete 'ggplot2' no está instalado. Instálalo antes de ejecutar este script.")
+}
 
 library(dplyr)
 library(ggplot2)
@@ -309,16 +313,14 @@ print(resumen_cuartiles_sueno)
 # Q1 vs Q4 de estudio -> rendimiento
 cat("\n--- Q1 vs Q4 de study_hours_per_day -> performance ---\n")
 
-q1_estudio <- quantile(df$study_hours_per_day, 0.25, na.rm = TRUE)
-q4_estudio <- quantile(df$study_hours_per_day, 0.75, na.rm = TRUE)
-
-df_q_estudio <- df %>%
-  mutate(grupo_q_estudio = case_when(
-    study_hours_per_day <= q1_estudio ~ "Q1_estudio",
-    study_hours_per_day >= q4_estudio ~ "Q4_estudio",
-    TRUE ~ NA_character_
-  )) %>%
-  filter(!is.na(grupo_q_estudio))
+df_q_sueno <- df %>% 
+mutate(
+  cuartil_estudio = ntile(study_hours_per_day, 4), 
+  grupo_q_estudio = case_when( 
+  cuartil_estudio == 1 ~ "Q1_estudio", 
+  cuartil_estudio == 4 ~ "Q4_estudio", 
+  TRUE ~ NA_character_ )) %>% 
+  filter(!is.na(grupo_q_sueno))
 
 resumen_q_estudio_perf <- df_q_estudio %>%
   group_by(grupo_q_estudio) %>%
