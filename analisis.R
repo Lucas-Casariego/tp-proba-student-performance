@@ -534,3 +534,44 @@ p_mucho_sueno <- ggplot(mucho_df, aes(x = grupo_sueno, fill = grade)) +
   theme_minimal()
 
 print(p_mucho_sueno)
+
+# ------------------------------------------------------------------------------
+# SEGUNDA PARTE - ESTIMACIÓN
+# ------------------------------------------------------------------------------
+
+
+# A. VARIABLE CUALITATIVA ELEGIDA PARA LA COMPARACIÓN DE GRUPOS
+
+
+cat("========== CONSIGNA A ==========\n")
+
+cat(
+  "La variable cualitativa elegida es 'parent_education' ",
+  "(nivel educativo de los padres).\n",
+  "Esta variable divide a los estudiantes en cuatro grupos:\n",
+  "- High School\n",
+  "- Bachelor\n",
+  "- Master\n",
+  "- PhD\n",
+  "La comparación es relevante porque el nivel educativo de los padres puede estar asociado con distintos contextos 
+  familiares, hábitos de estudio y apoyo académico, factores que podrían influir en el rendimiento de los estudiantes.\n"
+)
+
+
+# B. PARÁMETRO DE INTERÉS
+
+
+cat("========== CONSIGNA B ==========\n")
+
+cat(
+  "Se selecciona como variable cuantitativa de interés ",
+  "'study_hours_per_day' (horas de estudio por día).\n",
+  "El parámetro de interés es la media poblacional de horas de estudio para cada nivel educativo de los padres.\n",
+  "Notación de los parámetros:\n",
+  "u_HS : media poblacional de horas de estudio para estudiantes cuyos padres tienen nivel High School.\n",
+  "u_B  : media poblacional de horas de estudio para estudiantes cuyos padres tienen nivel Bachelor.\n",
+  "u_M  : media poblacional de horas de estudio para estudiantes cuyos padres tienen nivel Master.\n",
+  "u_P  : media poblacional de horas de estudio para estudiantes cuyos padres tienen nivel PhD.\n"
+)
+
+
