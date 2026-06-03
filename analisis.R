@@ -575,3 +575,24 @@ cat(
 )
 
 
+# C. INTERVALOS DE CONFIANZA DEL 95%
+
+
+cat("========== CONSIGNA C ==========\n")
+
+ic_estudio <- df %>%
+  group_by(parent_education) %>%
+  summarise(
+    n = n(), # n = tamaño muestral
+    media = mean(study_hours_per_day),
+    sd = sd(study_hours_per_day),
+    error = qt(0.975, df = n - 1) * sd / sqrt(n), # usamos 0.975 porque buscamos una confianza del 95% (2.5% en LI y en LS)
+    LI = media - error, # límite inferior
+    LS = media + error, # límite superior
+    .groups = "drop"
+  )
+
+cat("\nIntervalos de confianza del 95% para la media de horas de estudio:\n")
+print(ic_estudio)
+
+
